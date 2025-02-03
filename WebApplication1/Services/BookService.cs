@@ -8,58 +8,96 @@ using WebApplication1.repository;
 
 namespace WebApplication1.Services
 {
+    public interface IBookService
+    {
+        public Task<apiResult<List<BookDTO>>> GetAllBook();
+        public Task<apiResult<BookDTO>> GetBookById(int id);
+        public Task<apiResult<int>> CreateBook(BookModel book);
+        public Task<apiResult<BookDTO>> UpdateBook(int id, BookModel book);
+        public Task<apiResult<BookDTO>> DeleteBook(int id);
+    }
+
+
     public class BookService:IBookService
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IRepository<Book> _bookRepository;
         private readonly IMapper _mapper;
-        public BookService(IBookRepository bookRepository,IMapper mapper)
+        public BookService(IRepository<Book> bookRepository,IMapper mapper)
         {
             _bookRepository = bookRepository;
             _mapper = mapper;
             
         }
 
-        public async Task<int> CreateBook(BookModel book)
+        public async Task<apiResult<int>> CreateBook(BookModel book)
         {
-            var newbook = _mapper.Map<Book>(book);
-            await _bookRepository.Addbook(newbook);
-            await  _bookRepository.SaveChange();
-            return newbook.Id;
+            try
+            {
+                var newbook = _mapper.Map<Book>(book);
+                await _bookRepository.Add(newbook);
+
+                await _bookRepository.SaveChange();
+                return new apiResult<int>(new[] {"Thêm thành công"},newbook.Id);
+            }
+            catch (Exception ex)
+            {
+                return new apiResult<int>(new[] {ex.ToString()},0);
+            }
+        }
+
+        public async Task<apiResult<BookDTO>> DeleteBook(int id)
+        {
+            var book = await _bookRepository.GetById(id);
+            if (book != null)
+            {
+                await _bookRepository.Delete(book);
+                await _bookRepository.SaveChange();
+                return new apiResult<BookDTO>(new[] { "đã xoá" },new BookDTO { Id = book.Id,Title = book.Title});
+            }
+            else
+            {
+                return new apiResult<BookDTO>(new[] { "Không có bản ghi" }, null);
+            }
+        }
+
+        public async Task<apiResult<List<BookDTO>>> GetAllBook()
+        {
+            var book = await _bookRepository.GetAll()
+                .Select(p=> new BookDTO { Id = p.Id, Title = p.Title }).ToListAsync();
+            if(book != null)
+            {
+                return new apiResult<List<BookDTO>>(new[] {"thanh cong"},book );
+            }
+            return new apiResult<List<BookDTO>>(new[] {"khong co ban ghi"},null);
             
         }
 
-        public async Task DeleteBook(int id)
+        public async Task<apiResult<BookDTO>> GetBookById(int id)
         {
-            var book = await _bookRepository.GetBookById(id);
+            var book =await _bookRepository.GetById(id);
             if (book != null)
             {
-                await _bookRepository.DeleteBook(id);
-                
+                var result = new BookDTO { Id = book.Id, Title = book.Title };
+                return new apiResult<BookDTO>(new[] {"tìm thay"},result);
             }
-            await _bookRepository.SaveChange();
+            return new apiResult<BookDTO>(new[] { "khong co ban ghi" }, null);
+            
         }
 
-        public async Task<List<BookDTO>> GetAllBook()
+        public async Task<apiResult<BookDTO>> UpdateBook(int id, BookModel book)
         {
-            var book =   _bookRepository.GetAllBooks();
-            var result = book.Select(p=> new BookDTO { Id = p.Id, Title = p.Title }).ToList();
-            return result;
-        }
-
-        public async Task<BookDTO> GetBookById(int id)
-        {
-            var book =await _bookRepository.GetBookById(id);
-            var result = new BookDTO { Id = book.Id, Title = book.Title };
-            return result;
-        }
-
-        public async Task UpdateBook(int id, BookModel book)
-        {
-
-            var updatebook = _mapper.Map<Book>(book);
-            updatebook.Id = id;
-            await _bookRepository.UpdateBook( updatebook);
-            await _bookRepository.SaveChange();
+            var updatebook = await _bookRepository.GetById(id);
+            if (updatebook != null)
+            {
+                _mapper.Map(book, updatebook);
+                await _bookRepository.Update(updatebook);
+                await _bookRepository.SaveChange();
+                return new apiResult<BookDTO> ( new[] { "Cập nhật thanh công" }, new BookDTO { Id = updatebook.Id, Title = updatebook.Title} );
+            }
+            else
+            {
+                return new apiResult<BookDTO>(new[] { "cập nhật thất bại" },null );
+            }
         }
     }
 }

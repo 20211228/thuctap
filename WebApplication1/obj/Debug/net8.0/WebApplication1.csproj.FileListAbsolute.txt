@@ -284,3 +284,13 @@ D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\runtimes\win\lib\net7.0\Sys
 D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\AutoMapper.dll
 D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+D:\C#Source\thuctap\WebApplication1\obj\Debug\net8.0\WebApplication1.sourcelink.json
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\FluentValidation.dll
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+D:\C#Source\thuctap\WebApplication1\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

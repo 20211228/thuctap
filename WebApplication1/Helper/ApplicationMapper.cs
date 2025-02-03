@@ -7,7 +7,7 @@ namespace WebApplication1.Helper
     {
         public ApplicationMapper()
         {
-            CreateMap<Book, BookModel>().ReverseMap();
+            CreateMap<Book, BookModel>().ReverseMap().ForMember(book => book.Id,opt =>opt.Ignore());
         }
     }
 }
